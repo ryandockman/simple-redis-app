@@ -4,12 +4,12 @@
 
 ### Option 1: With In-Cluster Redis (Simplest)
 ```bash
-curl -fsSL https://raw.githubusercontent.com/YOUR_USERNAME/simple-redis-app/main/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/ryandockman/simple-redis-app/main/install.sh | bash
 ```
 
 ### Option 2: With Your Own Redis Endpoint
 ```bash
-curl -fsSL https://raw.githubusercontent.com/YOUR_USERNAME/simple-redis-app/main/install.sh | bash -s -- --redis-endpoint YOUR_REDIS_IP:6379
+curl -fsSL https://raw.githubusercontent.com/ryandockman/simple-redis-app/main/install.sh | bash -s -- --redis-endpoint YOUR_REDIS_IP:6379
 ```
 
 Replace `YOUR_REDIS_IP` with your Redis server IP address.
@@ -33,7 +33,7 @@ Open your browser to: **http://localhost:8080**
 ## 🧹 Uninstall
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/YOUR_USERNAME/simple-redis-app/main/install.sh | bash -s -- --cleanup
+curl -fsSL https://raw.githubusercontent.com/ryandockman/simple-redis-app/main/install.sh | bash -s -- --cleanup
 ```
 
 ## 📋 Prerequisites

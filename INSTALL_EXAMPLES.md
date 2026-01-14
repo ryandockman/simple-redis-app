@@ -4,32 +4,32 @@
 
 ### Install with in-cluster Redis
 ```bash
-curl -fsSL https://raw.githubusercontent.com/YOUR_USERNAME/simple-redis-app/main/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/ryandockman/simple-redis-app/main/install.sh | bash
 ```
 
 ### Install with external Redis
 ```bash
 # Replace with your Redis IP and port
-curl -fsSL https://raw.githubusercontent.com/YOUR_USERNAME/simple-redis-app/main/install.sh | bash -s -- --redis-endpoint 10.0.0.5:6379
+curl -fsSL https://raw.githubusercontent.com/ryandockman/simple-redis-app/main/install.sh | bash -s -- --redis-endpoint 10.0.0.5:6379
 ```
 
 ### Uninstall
 ```bash
-curl -fsSL https://raw.githubusercontent.com/YOUR_USERNAME/simple-redis-app/main/install.sh | bash -s -- --cleanup
+curl -fsSL https://raw.githubusercontent.com/ryandockman/simple-redis-app/main/install.sh | bash -s -- --cleanup
 ```
 
 ## Local Installation
 
 ### Clone and deploy with in-cluster Redis
 ```bash
-git clone https://github.com/YOUR_USERNAME/simple-redis-app.git
+git clone https://github.com/ryandockman/simple-redis-app.git
 cd simple-redis-app
 ./deploy.sh
 ```
 
 ### Clone and deploy with external Redis
 ```bash
-git clone https://github.com/YOUR_USERNAME/simple-redis-app.git
+git clone https://github.com/ryandockman/simple-redis-app.git
 cd simple-redis-app
 ./deploy.sh --redis-endpoint 192.168.1.100:6379
 ```

@@ -2,11 +2,6 @@
 
 A simple Kubernetes-native application with a backend that connects to Redis and a frontend to display and manage data.
 
-> **Note:** After uploading to GitHub, replace `YOUR_USERNAME` with your GitHub username in:
-> - `README.md`
-> - `install.sh`
-> - `INSTALL_EXAMPLES.md`
-
 ## Architecture
 
 - **Frontend**: Simple web UI with buttons to add sample data and view Redis contents
@@ -25,17 +20,17 @@ A simple Kubernetes-native application with a backend that connects to Redis and
 
 **With in-cluster Redis:**
 ```bash
-curl -fsSL https://raw.githubusercontent.com/YOUR_USERNAME/simple-redis-app/main/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/ryandockman/simple-redis-app/main/install.sh | bash
 ```
 
 **With external Redis endpoint:**
 ```bash
-curl -fsSL https://raw.githubusercontent.com/YOUR_USERNAME/simple-redis-app/main/install.sh | bash -s -- --redis-endpoint 10.0.0.5:6379
+curl -fsSL https://raw.githubusercontent.com/ryandockman/simple-redis-app/main/install.sh | bash -s -- --redis-endpoint 10.0.0.5:6379
 ```
 
 **Uninstall:**
 ```bash
-curl -fsSL https://raw.githubusercontent.com/YOUR_USERNAME/simple-redis-app/main/install.sh | bash -s -- --cleanup
+curl -fsSL https://raw.githubusercontent.com/ryandockman/simple-redis-app/main/install.sh | bash -s -- --cleanup
 ```
 
 ### Local Installation
@@ -43,7 +38,7 @@ curl -fsSL https://raw.githubusercontent.com/YOUR_USERNAME/simple-redis-app/main
 Clone the repository and deploy:
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/simple-redis-app.git
+git clone https://github.com/ryandockman/simple-redis-app.git
 cd simple-redis-app
 
 # Deploy with in-cluster Redis

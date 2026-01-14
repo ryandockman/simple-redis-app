@@ -29,13 +29,13 @@ usage() {
     echo ""
     echo "Examples:"
     echo "  # Install with in-cluster Redis:"
-    echo "  curl -fsSL https://raw.githubusercontent.com/YOUR_USERNAME/simple-redis-app/main/install.sh | bash"
+    echo "  curl -fsSL https://raw.githubusercontent.com/ryandockman/simple-redis-app/main/install.sh | bash"
     echo ""
     echo "  # Install with external Redis:"
-    echo "  curl -fsSL https://raw.githubusercontent.com/YOUR_USERNAME/simple-redis-app/main/install.sh | bash -s -- --redis-endpoint 10.0.0.5:6379"
+    echo "  curl -fsSL https://raw.githubusercontent.com/ryandockman/simple-redis-app/main/install.sh | bash -s -- --redis-endpoint 10.0.0.5:6379"
     echo ""
     echo "  # Cleanup:"
-    echo "  curl -fsSL https://raw.githubusercontent.com/YOUR_USERNAME/simple-redis-app/main/install.sh | bash -s -- --cleanup"
+    echo "  curl -fsSL https://raw.githubusercontent.com/ryandockman/simple-redis-app/main/install.sh | bash -s -- --cleanup"
     exit 1
 }
 
@@ -104,16 +104,11 @@ main() {
     cd "$TEMP_DIR"
     
     echo -e "${YELLOW}📥 Downloading application...${NC}"
-    
-    # Clone or download the repository
-    if command -v git &> /dev/null; then
-        git clone --depth 1 --branch "$BRANCH" "$REPO_URL" "$REPO_NAME"
-    else
-        # Fallback to downloading zip
-        curl -L "${REPO_URL}/archive/refs/heads/${BRANCH}.zip" -o repo.zip
-        unzip -q repo.zip
-        mv "${REPO_NAME}-${BRANCH}" "$REPO_NAME"
-    fi
+
+    # Download the repository as tarball (works for public repos without authentication)
+    curl -fsSL "${REPO_URL}/archive/refs/heads/${BRANCH}.tar.gz" -o repo.tar.gz
+    tar -xzf repo.tar.gz
+    mv "${REPO_NAME}-${BRANCH}" "$REPO_NAME"
     
     cd "$REPO_NAME"
     
@@ -138,7 +133,7 @@ main() {
     echo "  Then open http://localhost:8080 in your browser"
     echo ""
     echo -e "${YELLOW}To uninstall:${NC}"
-    echo "  curl -fsSL https://raw.githubusercontent.com/YOUR_USERNAME/simple-redis-app/main/install.sh | bash -s -- --cleanup"
+    echo "  curl -fsSL https://raw.githubusercontent.com/ryandockman/simple-redis-app/main/install.sh | bash -s -- --cleanup"
 }
 
 main
