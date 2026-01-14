@@ -3,7 +3,7 @@
 set -e
 
 # Configuration
-REPO_URL="https://github.com/YOUR_USERNAME/simple-redis-app"
+REPO_URL="https://github.com/ryandockman/simple-redis-app"
 REPO_NAME="simple-redis-app"
 BRANCH="main"
 
