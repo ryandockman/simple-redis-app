@@ -68,7 +68,7 @@ check_prerequisites() {
         exit 1
     fi
     
-    if ! command -v docker &> /dev/null; then
+    if ! command -v docker &> /dev/null && ! sudo docker --version &> /dev/null; then
         echo -e "${RED}Error: docker is not installed${NC}"
         exit 1
     fi

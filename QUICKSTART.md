@@ -41,6 +41,7 @@ curl -fsSL https://raw.githubusercontent.com/ryandockman/simple-redis-app/main/i
 - Kubernetes cluster running (minikube, kind, GKE, EKS, AKS, etc.)
 - `kubectl` installed and configured
 - `docker` installed (for building images)
+- `sudo` access (for Docker commands)
 
 ## 💡 Common Use Cases
 

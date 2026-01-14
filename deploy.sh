@@ -40,8 +40,8 @@ echo "🚀 Deploying Redis App to Kubernetes..."
 
 # Build Docker images
 echo "📦 Building Docker images..."
-docker build -t redis-app-backend:latest ./backend
-docker build -t redis-app-frontend:latest ./frontend
+sudo docker build -t redis-app-backend:latest ./backend
+sudo docker build -t redis-app-frontend:latest ./frontend
 
 # If using minikube, load images into minikube
 if command -v minikube &> /dev/null && minikube status &> /dev/null; then

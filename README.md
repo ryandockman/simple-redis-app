@@ -13,6 +13,7 @@ A simple Kubernetes-native application with a backend that connects to Redis and
 - Kubernetes cluster (minikube, kind, or any K8s cluster)
 - kubectl configured to access your cluster
 - Docker (for building images)
+- sudo access (for Docker commands)
 
 ## Quick Start
 
