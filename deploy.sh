@@ -43,11 +43,20 @@ echo "📦 Building Docker images..."
 sudo docker build -t redis-app-backend:latest ./backend
 sudo docker build -t redis-app-frontend:latest ./frontend
 
-# If using minikube, load images into minikube
+# Load images into cluster
 if command -v minikube &> /dev/null && minikube status &> /dev/null; then
     echo "🔄 Loading images into Minikube..."
     minikube image load redis-app-backend:latest
     minikube image load redis-app-frontend:latest
+elif command -v kind &> /dev/null && kind get clusters 2>/dev/null | grep -q .; then
+    echo "🔄 Loading images into kind cluster..."
+    # Get the kind cluster name (use first cluster if multiple exist)
+    KIND_CLUSTER=$(kind get clusters | head -n 1)
+    echo "Using kind cluster: $KIND_CLUSTER"
+    kind load docker-image redis-app-backend:latest --name "$KIND_CLUSTER"
+    kind load docker-image redis-app-frontend:latest --name "$KIND_CLUSTER"
+else
+    echo "⚠️  Warning: Could not detect minikube or kind. Make sure images are available in your cluster."
 fi
 
 # Create namespace
