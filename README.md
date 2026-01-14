@@ -15,6 +15,8 @@ A simple Kubernetes-native application with a backend that connects to Redis and
 - Docker (for building images)
 - sudo access (for Docker commands)
 
+**Note:** The installer auto-detects kind clusters and loads images automatically. For Kubernetes-in-Docker setups, you may need to specify the cluster name with `--kind-cluster` flag.
+
 ## Quick Start
 
 ### One-Line Install from GitHub

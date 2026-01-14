@@ -16,6 +16,7 @@ NC='\033[0m' # No Color
 # Parse command line arguments
 REDIS_ENDPOINT=""
 CLEANUP=false
+KIND_CLUSTER_NAME=""
 
 usage() {
     echo "Simple Redis App - Kubernetes Installer"
@@ -24,6 +25,7 @@ usage() {
     echo ""
     echo "Options:"
     echo "  --redis-endpoint <host:port>   Use external Redis endpoint (e.g., 10.0.0.5:6379)"
+    echo "  --kind-cluster <name>          Specify kind cluster name (e.g., kind)"
     echo "  --cleanup                      Remove the application from Kubernetes"
     echo "  -h, --help                     Show this help message"
     echo ""
@@ -34,6 +36,9 @@ usage() {
     echo "  # Install with external Redis:"
     echo "  curl -fsSL https://raw.githubusercontent.com/ryandockman/simple-redis-app/main/install.sh | bash -s -- --redis-endpoint 10.0.0.5:6379"
     echo ""
+    echo "  # Install with kind cluster:"
+    echo "  curl -fsSL https://raw.githubusercontent.com/ryandockman/simple-redis-app/main/install.sh | bash -s -- --kind-cluster kind"
+    echo ""
     echo "  # Cleanup:"
     echo "  curl -fsSL https://raw.githubusercontent.com/ryandockman/simple-redis-app/main/install.sh | bash -s -- --cleanup"
     exit 1
@@ -43,6 +48,10 @@ while [[ $# -gt 0 ]]; do
     case $1 in
         --redis-endpoint)
             REDIS_ENDPOINT="$2"
+            shift 2
+            ;;
+        --kind-cluster)
+            KIND_CLUSTER_NAME="$2"
             shift 2
             ;;
         --cleanup)
@@ -114,12 +123,16 @@ main() {
     
     # Run deployment
     echo -e "${YELLOW}🚀 Deploying to Kubernetes...${NC}"
-    
+
+    DEPLOY_ARGS=""
     if [ -n "$REDIS_ENDPOINT" ]; then
-        ./deploy.sh --redis-endpoint "$REDIS_ENDPOINT"
-    else
-        ./deploy.sh
+        DEPLOY_ARGS="$DEPLOY_ARGS --redis-endpoint $REDIS_ENDPOINT"
     fi
+    if [ -n "$KIND_CLUSTER_NAME" ]; then
+        DEPLOY_ARGS="$DEPLOY_ARGS --kind-cluster $KIND_CLUSTER_NAME"
+    fi
+
+    ./deploy.sh $DEPLOY_ARGS
     
     # Cleanup temp directory
     cd /
