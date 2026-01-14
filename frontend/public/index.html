@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Redis App</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            padding: 40px;
+        }
+        
+        h1 {
+            color: #333;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        .controls {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+        
+        button {
+            padding: 12px 24px;
+            font-size: 16px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+        }
+        
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn-secondary {
+            background: #48bb78;
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background: #38a169;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(72, 187, 120, 0.4);
+        }
+        
+        .data-list {
+            list-style: none;
+        }
+        
+        .data-item {
+            background: #f7fafc;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 6px;
+            border-left: 4px solid #667eea;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .data-content {
+            flex: 1;
+        }
+        
+        .data-key {
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 5px;
+        }
+        
+        .data-value {
+            color: #4a5568;
+            font-size: 14px;
+        }
+        
+        .btn-delete {
+            background: #f56565;
+            color: white;
+            padding: 8px 16px;
+            font-size: 14px;
+        }
+        
+        .btn-delete:hover {
+            background: #e53e3e;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: #718096;
+        }
+        
+        .status {
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 6px;
+            text-align: center;
+            font-weight: 500;
+        }
+        
+        .status.success {
+            background: #c6f6d5;
+            color: #22543d;
+        }
+        
+        .status.error {
+            background: #fed7d7;
+            color: #742a2a;
+        }
+        
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔴 Redis Data Viewer</h1>
+        
+        <div id="status" class="status hidden"></div>
+        
+        <div class="controls">
+            <button class="btn-primary" onclick="addSampleData()">➕ Add Sample Data</button>
+            <button class="btn-secondary" onclick="loadData()">🔄 Refresh</button>
+        </div>
+        
+        <ul id="dataList" class="data-list"></ul>
+    </div>
+
+    <script>
+        const API_URL = window.location.hostname === 'localhost' 
+            ? 'http://localhost:3000' 
+            : 'http://backend:3000';
+
+        function showStatus(message, isError = false) {
+            const status = document.getElementById('status');
+            status.textContent = message;
+            status.className = `status ${isError ? 'error' : 'success'}`;
+            setTimeout(() => {
+                status.className = 'status hidden';
+            }, 3000);
+        }
+
+        async function loadData() {
+            try {
+                const response = await fetch(`${API_URL}/api/data`);
+                const data = await response.json();
+                
+                const dataList = document.getElementById('dataList');
+                
+                if (data.length === 0) {
+                    dataList.innerHTML = '<div class="empty-state">No data in Redis. Click "Add Sample Data" to get started!</div>';
+                    return;
+                }
+                
+                dataList.innerHTML = data.map(item => `
+                    <li class="data-item">
+                        <div class="data-content">
+                            <div class="data-key">${item.key}</div>
+                            <div class="data-value">${item.value}</div>
+                        </div>
+                        <button class="btn-delete" onclick="deleteData('${item.key}')">Delete</button>
+                    </li>
+                `).join('');
+            } catch (error) {
+                console.error('Error loading data:', error);
+                showStatus('Failed to load data', true);
+            }
+        }
+
+        async function addSampleData() {
+            try {
+                const response = await fetch(`${API_URL}/api/add-sample`, {
+                    method: 'POST'
+                });
+                const result = await response.json();
+                
+                if (result.success) {
+                    showStatus('Sample data added successfully!');
+                    loadData();
+                }
+            } catch (error) {
+                console.error('Error adding sample data:', error);
+                showStatus('Failed to add sample data', true);
+            }
+        }
+
+        async function deleteData(key) {
+            try {
+                const response = await fetch(`${API_URL}/api/data/${encodeURIComponent(key)}`, {
+                    method: 'DELETE'
+                });
+                const result = await response.json();
+                
+                if (result.success) {
+                    showStatus('Data deleted successfully!');
+                    loadData();
+                }
+            } catch (error) {
+                console.error('Error deleting data:', error);
+                showStatus('Failed to delete data', true);
+            }
+        }
+
+        // Load data on page load
+        loadData();
+    </script>
+</body>
+</html>
+

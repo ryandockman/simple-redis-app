@@ -1,0 +1,27 @@
+name: Build Docker Images
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Build Backend Image
+      run: docker build -t redis-app-backend:latest ./backend
+    
+    - name: Build Frontend Image
+      run: docker build -t redis-app-frontend:latest ./frontend
+    
+    - name: Test Backend Build
+      run: docker run --rm redis-app-backend:latest node --version
+    
+    - name: Test Frontend Build
+      run: docker run --rm redis-app-frontend:latest node --version
+
